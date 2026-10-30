@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { 
   FileDown, 
   ArrowRight, 
@@ -9,14 +9,32 @@ import {
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, LeetCodeIcon } from './Icons';
 import { personalInfo } from '../data/portfolioData';
+import { useMode } from '../context/ModeContext';
+
+const Hero3DCanvas = lazy(() => import('./Hero3DCanvas').then(m => ({ default: m.Hero3DCanvas })));
 
 export const Hero: React.FC = () => {
+  const { isHacker } = useMode();
   return (
     <section id="home" className="relative min-h-[92vh] pt-28 pb-16 flex items-center justify-center overflow-hidden">
+      {/* 3D Ambient Particle Constellation Background */}
+      <Suspense fallback={null}>
+        <Hero3DCanvas />
+      </Suspense>
+
       {/* Background Subtle Gradient & Grid Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-sky-500/10 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute top-1/3 right-10 w-[300px] h-[300px] bg-indigo-500/5 blur-[100px] rounded-full pointer-events-none" />
+      {isHacker ? (
+        <>
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-green-500/8 blur-[130px] rounded-full pointer-events-none" />
+          <div className="absolute top-1/3 right-10 w-[300px] h-[300px] bg-green-400/5 blur-[100px] rounded-full pointer-events-none" />
+        </>
+      ) : (
+        <>
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-sky-500/10 blur-[130px] rounded-full pointer-events-none" />
+          <div className="absolute top-1/3 right-10 w-[300px] h-[300px] bg-indigo-500/5 blur-[100px] rounded-full pointer-events-none" />
+        </>
+      )}
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -25,63 +43,77 @@ export const Hero: React.FC = () => {
           <div className="lg:col-span-7 space-y-6 text-left">
             
             {/* Eyebrow Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-slate-300">
+            <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono border ${
+              isHacker
+                ? 'bg-[#B7FF5A]/10 border-[#B7FF5A]/30 text-[#B7FF5A]'
+                : 'bg-white/[0.04] border-white/10 text-slate-300'
+            }`}>
               <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isHacker ? 'bg-[#B7FF5A]' : 'bg-emerald-400'}`}></span>
+                <span className={`relative inline-flex rounded-full h-2 w-2 ${isHacker ? 'bg-[#B7FF5A]' : 'bg-emerald-500'}`}></span>
               </span>
-              <span className="text-slate-400 uppercase tracking-wider font-semibold text-[11px]">
-                COMPUTER ENGINEERING · PICT PUNE
+              <span className={`uppercase tracking-wider font-semibold text-[11px] ${isHacker ? 'text-[#B7FF5A]' : 'text-slate-400'}`}>
+                {isHacker ? '> COMPUTER ENGINEERING · PICT PUNE' : 'COMPUTER ENGINEERING · PICT PUNE'}
               </span>
-              <span className="text-slate-500">|</span>
-              <span className="text-sky-400 font-medium text-[11px]">2023–2027</span>
+              <span className={isHacker ? 'text-slate-600' : 'text-slate-500'}>|</span>
+              <span className={`font-medium text-[11px] ${isHacker ? 'text-[#B7FF5A]' : 'text-sky-400'}`}>2023–2027</span>
             </div>
 
             {/* Main Heading */}
             <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
-                Hi, I'm{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-sky-200 to-indigo-300">
-                  {personalInfo.name}
-                </span>
-                .
+              <h1 className={`text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] transition-colors duration-500 ${isHacker ? 'text-white' : 'text-white'}`}>
+                {isHacker ? '> ' : 'Hi, I\'m '}{
+                isHacker ? (
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#B7FF5A] via-[#d5ff99] to-[#8ae032]">
+                    {personalInfo.name}
+                  </span>
+                ) : (
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-sky-200 to-indigo-300">
+                    {personalInfo.name}
+                  </span>
+                )}
+                {isHacker ? '_' : '.'}
               </h1>
-              <p className="text-lg sm:text-xl font-medium text-slate-300 leading-snug">
-                {personalInfo.headline}
+              <p className={`text-lg sm:text-xl font-medium leading-snug transition-colors duration-500 ${isHacker ? 'text-[#B7FF5A] font-mono' : 'text-slate-300'}`}>
+                {isHacker
+                  ? '// backend engineer. system builder. leetcode knight.'
+                  : personalInfo.headline}
               </p>
             </div>
 
             {/* Supporting Bio */}
-            <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-2xl">
-              {personalInfo.subheadline}
+            <p className={`text-sm sm:text-base leading-relaxed max-w-2xl transition-colors duration-500 ${isHacker ? 'text-slate-300 font-mono' : 'text-slate-400'}`}>
+              {isHacker
+                ? `/* ${personalInfo.subheadline} */`
+                : personalInfo.subheadline}
             </p>
 
             {/* Resume Verified Metric Badges */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
-              <div className="p-2.5 rounded-xl bg-[#0f121a]/80 border border-white/10 flex flex-col">
-                <span className="text-xs font-mono text-slate-400">Academic CGPA</span>
-                <span className="text-lg sm:text-xl font-bold text-sky-400 font-mono">9.45<span className="text-xs text-slate-500">/10</span></span>
-                <span className="text-[10px] text-slate-500">PICT Pune</span>
+              <div className={`p-2.5 rounded-xl flex flex-col border ${isHacker ? 'bg-[#080d09]/90 border-[#B7FF5A]/20' : 'bg-[#0f121a]/80 border-white/10'}`}>
+                <span className={`text-xs font-mono ${isHacker ? 'text-slate-400' : 'text-slate-400'}`}>Academic CGPA</span>
+                <span className={`text-lg sm:text-xl font-bold font-mono ${isHacker ? 'text-[#B7FF5A]' : 'text-sky-400'}`}>9.45<span className={`text-xs ${isHacker ? 'text-slate-500' : 'text-slate-500'}`}>/10</span></span>
+                <span className={`text-[10px] ${isHacker ? 'text-slate-500' : 'text-slate-500'}`}>PICT Pune</span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-[#0f121a]/80 border border-amber-500/20 flex flex-col">
-                <span className="text-xs font-mono text-amber-400/90 flex items-center gap-1">
-                  <Award className="w-3 h-3 text-amber-400" /> LeetCode
+              <div className={`p-2.5 rounded-xl flex flex-col border ${isHacker ? 'bg-[#080d09]/90 border-[#B7FF5A]/20' : 'bg-[#0f121a]/80 border-amber-500/20'}`}>
+                <span className={`text-xs font-mono flex items-center gap-1 ${isHacker ? 'text-slate-400' : 'text-amber-400/90'}`}>
+                  <Award className={`w-3 h-3 ${isHacker ? 'text-[#B7FF5A]' : 'text-amber-400'}`} /> LeetCode
                 </span>
-                <span className="text-lg sm:text-xl font-bold text-amber-300 font-mono">Knight</span>
-                <span className="text-[10px] text-slate-500">1950 Max Rating</span>
+                <span className={`text-lg sm:text-xl font-bold font-mono ${isHacker ? 'text-[#B7FF5A]' : 'text-amber-300'}`}>Knight</span>
+                <span className={`text-[10px] ${isHacker ? 'text-slate-500' : 'text-slate-500'}`}>1950 Max Rating</span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-[#0f121a]/80 border border-white/10 flex flex-col">
-                <span className="text-xs font-mono text-slate-400">DSA Solved</span>
-                <span className="text-lg sm:text-xl font-bold text-emerald-400 font-mono">700+</span>
-                <span className="text-[10px] text-slate-500">LeetCode + CodeChef</span>
+              <div className={`p-2.5 rounded-xl flex flex-col border ${isHacker ? 'bg-[#080d09]/90 border-[#B7FF5A]/20' : 'bg-[#0f121a]/80 border-white/10'}`}>
+                <span className={`text-xs font-mono ${isHacker ? 'text-slate-400' : 'text-slate-400'}`}>DSA Solved</span>
+                <span className={`text-lg sm:text-xl font-bold font-mono ${isHacker ? 'text-[#B7FF5A]' : 'text-emerald-400'}`}>700+</span>
+                <span className={`text-[10px] ${isHacker ? 'text-slate-500' : 'text-slate-500'}`}>LeetCode + CodeChef</span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-[#0f121a]/80 border border-sky-500/20 flex flex-col">
-                <span className="text-xs font-mono text-sky-400">CodeChef</span>
-                <span className="text-lg sm:text-xl font-bold text-sky-300 font-mono">3-Star</span>
-                <span className="text-[10px] text-slate-500">1650 Max Rating</span>
+              <div className={`p-2.5 rounded-xl flex flex-col border ${isHacker ? 'bg-[#080d09]/90 border-[#B7FF5A]/20' : 'bg-[#0f121a]/80 border-sky-500/20'}`}>
+                <span className={`text-xs font-mono ${isHacker ? 'text-slate-400' : 'text-sky-400'}`}>CodeChef</span>
+                <span className={`text-lg sm:text-xl font-bold font-mono ${isHacker ? 'text-[#B7FF5A]' : 'text-sky-300'}`}>3-Star</span>
+                <span className={`text-[10px] ${isHacker ? 'text-slate-500' : 'text-slate-500'}`}>1650 Max Rating</span>
               </div>
             </div>
 
@@ -89,27 +121,41 @@ export const Hero: React.FC = () => {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-black font-semibold text-sm shadow-glow-sky transition-all duration-200"
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                  isHacker
+                    ? 'bg-gradient-to-r from-[#B7FF5A] to-[#8ae032] hover:from-[#c8ff75] hover:to-[#9df245] text-black font-mono font-bold shadow-md shadow-[#B7FF5A]/20'
+                    : 'bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-black shadow-glow-sky'
+                }`}
+                data-cursor="btn"
+                data-magnetic="true"
               >
-                <span>Explore My Projects</span>
+                <span>{isHacker ? './explore_projects.sh' : 'Explore My Projects'}</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
 
               <a
                 href={personalInfo.resumeUrl}
                 download="Sumit-Karkhile-Resume.pdf"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] text-white font-medium text-sm border border-white/15 hover:border-sky-500/40 transition-all duration-200"
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm border transition-all duration-200 ${
+                  isHacker
+                    ? 'bg-[#B7FF5A]/10 hover:bg-[#B7FF5A]/20 text-[#B7FF5A] border-[#B7FF5A]/30 hover:border-[#B7FF5A]/60 font-mono'
+                    : 'bg-white/[0.08] hover:bg-white/[0.14] text-white border-white/15 hover:border-sky-500/40'
+                }`}
+                data-cursor="btn"
               >
-                <FileDown className="w-4 h-4 text-sky-400" />
-                <span>Download Resume</span>
+                <FileDown className={`w-4 h-4 ${isHacker ? 'text-[#B7FF5A]' : 'text-sky-400'}`} />
+                <span>{isHacker ? 'wget resume.pdf' : 'Download Resume'}</span>
               </a>
 
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-slate-300 hover:text-white font-medium text-sm hover:bg-white/5 transition-colors"
+                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors ${
+                  isHacker ? 'text-slate-300 hover:text-[#B7FF5A] hover:bg-white/5 font-mono' : 'text-slate-300 hover:text-white hover:bg-white/5'
+                }`}
+                data-cursor="btn"
               >
-                <Mail className="w-4 h-4 text-slate-400" />
-                <span>Contact Me</span>
+                <Mail className={`w-4 h-4 ${isHacker ? 'text-[#B7FF5A]' : 'text-slate-400'}`} />
+                <span>{isHacker ? 'ping me' : 'Contact Me'}</span>
               </a>
             </div>
 
@@ -123,6 +169,7 @@ export const Hero: React.FC = () => {
                 className="p-2 rounded-lg bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition-colors"
                 title="GitHub @Sai600858"
                 aria-label="GitHub Profile"
+                data-cursor="ext"
               >
                 <GithubIcon className="w-4 h-4" />
               </a>
@@ -133,6 +180,7 @@ export const Hero: React.FC = () => {
                 className="p-2 rounded-lg bg-white/5 hover:bg-white/10 hover:text-sky-400 border border-white/10 transition-colors"
                 title="LinkedIn Sumit Karkhile"
                 aria-label="LinkedIn Profile"
+                data-cursor="ext"
               >
                 <LinkedinIcon className="w-4 h-4" />
               </a>
@@ -143,6 +191,7 @@ export const Hero: React.FC = () => {
                 className="p-2 rounded-lg bg-white/5 hover:bg-white/10 hover:text-amber-400 border border-white/10 transition-colors"
                 title="LeetCode @sumit_307 (Knight 1950)"
                 aria-label="LeetCode Profile"
+                data-cursor="ext"
               >
                 <LeetCodeIcon className="w-4 h-4" />
               </a>
@@ -153,6 +202,7 @@ export const Hero: React.FC = () => {
                 className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 hover:text-sky-300 border border-white/10 text-xs font-mono font-medium transition-colors"
                 title="CodeChef @sai_812 (3-Star)"
                 aria-label="CodeChef Profile"
+                data-cursor="ext"
               >
                 CodeChef
               </a>
@@ -179,8 +229,8 @@ export const Hero: React.FC = () => {
                 <div className="relative w-full aspect-[4/5] rounded-xl overflow-hidden bg-slate-900 border border-white/10">
                   <img
                     src={personalInfo.profilePhoto}
-                    alt="Sumit Karkhile - Software Engineer & Backend Developer"
-                    className="w-full h-full object-cover object-top filter grayscale contrast-105 group-hover:grayscale-0 transition-all duration-500"
+                    alt="Sumit Karkhile - Software Engineer & Full-Stack Developer"
+                    className="w-full h-full object-cover object-top contrast-[1.03] group-hover:scale-[1.02] transition-all duration-500"
                     loading="eager"
                   />
                   

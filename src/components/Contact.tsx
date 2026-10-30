@@ -12,8 +12,11 @@ import {
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, LeetCodeIcon } from './Icons';
 import confetti from 'canvas-confetti';
+import { useMode } from '../context/ModeContext';
+import { DecryptedText } from './DecryptedText';
 
 export const Contact: React.FC = () => {
+  const { isHacker } = useMode();
   const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -57,6 +60,7 @@ export const Contact: React.FC = () => {
     // Open real email client
     window.location.href = `mailto:${personalInfo.email}?subject=${emailSubject}&body=${emailBody}`;
     setStatusMsg('Opening your default mail client...');
+    setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
   return (
@@ -65,11 +69,16 @@ export const Contact: React.FC = () => {
         
         {/* Section Header */}
         <div className="flex flex-col items-start gap-2 mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-sky-400">
-            <span>08 // GET IN TOUCH</span>
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono ${
+            isHacker ? 'bg-[#B7FF5A]/10 border-[#B7FF5A]/30 text-[#B7FF5A]' : 'bg-white/[0.04] border-white/10 text-sky-400'
+          }`}>
+            <span>{isHacker ? '> 08 // TRANSMISSION_UPLINK' : '08 // GET IN TOUCH'}</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Let's build something meaningful.
+            <DecryptedText 
+              text={isHacker ? "Establish Uplink // Transmit Transmission" : "Let's build something meaningful."}
+              trigger={isHacker}
+            />
           </h2>
           <p className="text-sm sm:text-base text-slate-400 max-w-2xl mt-1">
             I'm interested in software engineering opportunities and projects involving backend development, full-stack engineering, and AI-powered applications.

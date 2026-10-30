@@ -1,26 +1,30 @@
 import React from 'react';
 import { personalInfo } from '../data/portfolioData';
 import { Server, Cpu, Brain, Rocket, CheckCircle } from 'lucide-react';
+import { useMode } from '../context/ModeContext';
+import { DecryptedText } from './DecryptedText';
 
 export const About: React.FC = () => {
+  const { isHacker } = useMode();
+
   const highlights = [
     {
-      icon: <Server className="w-5 h-5 text-sky-400" />,
+      icon: <Server className={`w-5 h-5 ${isHacker ? 'text-[#B7FF5A]' : 'text-sky-400'}`} />,
       title: 'Backend Engineering',
       desc: 'Architecting secure Spring Boot microservices, RESTful APIs, JWT authentication, and transactional MySQL/PostgreSQL persistence.'
     },
     {
-      icon: <Cpu className="w-5 h-5 text-amber-400" />,
+      icon: <Cpu className={`w-5 h-5 ${isHacker ? 'text-emerald-400' : 'text-amber-400'}`} />,
       title: 'Algorithmic Problem Solving',
       desc: 'LeetCode Knight (1950 max rating) with 700+ solved algorithmic problems focusing on graphs, dynamic programming, and optimal complexity.'
     },
     {
-      icon: <Brain className="w-5 h-5 text-emerald-400" />,
+      icon: <Brain className={`w-5 h-5 ${isHacker ? 'text-cyan-400' : 'text-emerald-400'}`} />,
       title: 'AI & Document Systems',
       desc: 'Integrating Google Gemini API for conversational RAG document chat and Sentence-BERT transformers for semantic matching.'
     },
     {
-      icon: <Rocket className="w-5 h-5 text-indigo-400" />,
+      icon: <Rocket className={`w-5 h-5 ${isHacker ? 'text-[#B7FF5A]' : 'text-indigo-400'}`} />,
       title: 'Production Deployment',
       desc: 'Containerizing Java backends with Docker, orchestrating GitHub Actions CI/CD pipelines, and deploying to AWS EC2 behind Nginx.'
     }
@@ -32,11 +36,16 @@ export const About: React.FC = () => {
         
         {/* Section Header */}
         <div className="flex flex-col items-start gap-2 mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-sky-400">
-            <span>01 // ABOUT ME</span>
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono ${
+            isHacker ? 'bg-[#B7FF5A]/10 border-[#B7FF5A]/30 text-[#B7FF5A]' : 'bg-white/[0.04] border-white/10 text-sky-400'
+          }`}>
+            <span>{isHacker ? '> 01 // SYSTEM_PROFILE' : '01 // ABOUT ME'}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-            Engineering reliable software from first principles.
+            <DecryptedText 
+              text={isHacker ? "Kernel philosophy & algorithmic systems from first principles." : "Engineering reliable software from first principles."} 
+              trigger={isHacker}
+            />
           </h2>
         </div>
 

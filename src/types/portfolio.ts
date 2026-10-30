@@ -11,6 +11,9 @@ export interface Project {
   githubUrl?: string;
   liveUrl?: string;
   statusBadge: string;
+  isFeaturedBE?: boolean;
+  bannerImage?: string;
+  status?: 'in-progress' | 'completed';
 }
 
 export interface SkillCategory {

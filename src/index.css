@@ -29,6 +29,18 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #2e344a;
   }
+
+  /* Hacker mode scrollbar */
+  [data-mode="hacker"]::-webkit-scrollbar-track {
+    background: #010a01;
+  }
+  [data-mode="hacker"]::-webkit-scrollbar-thumb {
+    background: #003300;
+    border-radius: 4px;
+  }
+  [data-mode="hacker"]::-webkit-scrollbar-thumb:hover {
+    background: #005500;
+  }
 }
 
 @layer utilities {
@@ -68,4 +80,59 @@
     border-color: rgba(56, 189, 248, 0.4);
     box-shadow: 0 8px 30px -10px rgba(56, 189, 248, 0.15);
   }
+
+  .shadow-glow-green {
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.2), 0 4px 16px rgba(0, 255, 65, 0.1);
+  }
+
+  .text-glow-green {
+    text-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+  }
+
+  /* Hacker mode grid tint with phosphor-lime */
+  [data-mode="hacker"] .bg-grid-pattern {
+    background-image: 
+      linear-gradient(to right, rgba(183, 255, 90, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(183, 255, 90, 0.035) 1px, transparent 1px);
+  }
+
+  /* SUMIT.OS Phosphor-Lime utilities */
+  .text-lime-phosphor {
+    color: #B7FF5A;
+  }
+  .bg-surface-hacker {
+    background-color: #050806;
+  }
+  .bg-card-hacker {
+    background-color: #080d09;
+  }
+  .border-technical-lime {
+    border-color: rgba(183, 255, 90, 0.18);
+  }
 }
+
+/* Custom Cyber Cursor Animations & Rules */
+@keyframes cursorPulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.cursor-pulse-anim {
+  animation: cursorPulse 0.24s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+@media (pointer: fine) {
+  body.hacker-cursor-active,
+  body.hacker-cursor-active a,
+  body.hacker-cursor-active button,
+  body.hacker-cursor-active [role="button"],
+  body.hacker-cursor-active .cursor-pointer {
+    cursor: none !important;
+  }
+  body.hacker-cursor-active input,
+  body.hacker-cursor-active textarea,
+  body.hacker-cursor-active [contenteditable="true"] {
+    cursor: text !important;
+  }
+}
+

@@ -27,7 +27,7 @@ export const personalInfo = {
   stats: [
     { label: 'Academic CGPA', value: '9.45 / 10', detail: 'PICT Computer Engineering' },
     { label: 'LeetCode Knight', value: '1950', detail: 'Top Competitive Rank' },
-    { label: 'DSA Solved', value: '700+', detail: 'LeetCode & CodeChef' },
+    { label: 'DSA Solved', value: '700+', detail: '600+ LeetCode · 100+ CodeChef' },
     { label: 'CodeChef Rating', value: '1650 (3★)', detail: 'Division 2 Contender' },
   ],
   socials: {
@@ -79,6 +79,60 @@ export const experienceData: ExperienceItem[] = [
 ];
 
 export const projectsData: Project[] = [
+  {
+    id: 'lecturelens',
+    title: 'LectureLens — AI-Powered Lecture Platform',
+    tagline: 'Multimodal real-time lecture system with WebRTC SFU, Gemini AI, RAG Q&A, and a Java Spring Boot backend.',
+    category: 'Full-Stack',
+    year: '2026',
+    statusBadge: 'Final-Year BE Project',
+    status: 'in-progress',
+    isFeaturedBE: true,
+    bannerImage: '/lecturelens-banner.jpg',
+    githubUrl: 'https://github.com/Sai600858',
+    description: 'LectureLens is a final-year Bachelor of Engineering capstone project — a full-stack, AI-powered academic lecture platform that transforms passive video lectures into interactive, AI-enriched learning environments. The platform enables live classroom sessions over WebRTC (mediasoup SFU), real-time speech-to-text transcription, whiteboard visual analysis via Google Gemini Vision, and a post-lecture hub offering RAG-grounded Q&A, AI-generated quizzes and flashcards, spaced-repetition learning tools, 3D interactive algorithm visualizations, and multi-format PDF exports.',
+    technologies: [
+      'Java 21',
+      'Spring Boot 3.3',
+      'Spring Security + JWT',
+      'PostgreSQL + Flyway',
+      'React 18 + Vite',
+      'mediasoup WebRTC SFU',
+      'Socket.IO',
+      'Google Gemini API',
+      'Faster-Whisper (STT)',
+      'Python FastAPI',
+      'Apache PDFBox',
+      'SQLite (Legacy)',
+      'Three.js',
+      'KaTeX',
+      'DOMPurify',
+      'Node.js + Express',
+    ],
+    features: [
+      'Live WebRTC multiparty classroom via mediasoup SFU: camera/mic, screen sharing with dedicated high-res student stage, participant roster, and real-time Socket.IO chat.',
+      'Real-time speech-to-text transcription using Google Gemini STT (primary) and Faster-Whisper (fallback) — chunked MediaRecorder audio → timestamped speaker-tagged transcript.',
+      'Gemini Vision AI whiteboard analysis: automatic formula → LaTeX extraction, diagram description, and slide content OCR on every captured frame.',
+      'Post-Lecture Hub: 8 synchronized tabs — Video/Chapter seek, Transcript search, AI Summary (4 modes: Detailed / Exam Cram / Short / Beginner), Study Notes with KaTeX, RAG Q&A, AI Quiz, Flashcards, and Whiteboard gallery.',
+      'RAG Q&A engine ("Ask This Lecture"): retrieves grounded answers with exact timestamp citations from the lecture transcript — abstains when evidence is insufficient.',
+      'AI Quiz engine: generates MCQ, True/False, fill-in-the-blank, and short-answer questions; server-side grading returns score, per-question feedback, and weak-topic recommendations.',
+      'Spaced-repetition 3D flip flashcards with per-card mastery state persistence.',
+      'Standalone Visualization Lab: interactive Three.js 3D simulations — AVL Self-Balancing Tree (insertion + rotations), Raft Distributed Consensus (5-node election + heartbeats), and Neural Network forward propagation.',
+      'PDF export engine (PDFKit + Apache PDFBox): generates Transcript PDF, Summary PDF, and Complete Study Notes PDF with LaTeX-rendered formulas on demand.',
+      'RBAC (Role-Based Access Control): Teacher, Student, Admin roles enforced at the JWT level — students are 403 Forbidden from instructor and admin routes.',
+      'Spring Boot 3.3 secondary backend with Spring Data JPA, PostgreSQL + Flyway schema migrations, Spring Security JWT filter, SpringDoc OpenAPI, and Spring Boot Actuator health endpoints.',
+      'SALKG research module: Subject-Adaptive Lecture Knowledge Graph — offline Python prototype evaluating multimodal alignment and ontological graph construction using subject-specific schemas and dynamic programming sequence optimization.',
+    ],
+    architecture: [
+      'Frontend: React 18 + Vite SPA with protected React Router routes; mediasoup-client for WebRTC transport negotiation; Socket.IO client for real-time room events; KaTeX for client-side LaTeX formula rendering; DOMPurify for SVG XSS sanitization.',
+      'Node.js Media SFU (Port 3001): mediasoup worker threads managing WebRTC RTP transport routing; Socket.IO signaling server for room join/leave/peer negotiation; API forwarding gateway proxying /api/* requests to Spring Boot with legacy SQLite fallback when Spring Boot is unreachable.',
+      'Spring Boot 3.3 Backend (Port 8080): Java 21 REST API for auth (AuthController), lectures, transcripts, quizzes, flashcards, summaries, study notes, RAG, multimodal ingestion, chapter management, PDF export; Spring Security JWT filter chain; Spring Data JPA + PostgreSQL (authoritative) with Flyway version-controlled schema; Apache PDFBox PDF generation service.',
+      'Python AI Microservice (Port 8000): FastAPI server exposing /stt/transcribe (Faster-Whisper audio transcription), /vision/board-ocr, and /vision/screen-ocr endpoints; decoupled from main servers — Node.js falls back to Gemini STT when Python service is unavailable.',
+      'Unified STT Server (Port 5000): Node.js Socket.IO server receiving chunked MediaRecorder audio from the client, routing to Gemini Flash / OpenAI Whisper / Faster-Whisper pipeline based on STT_PROVIDER env variable.',
+      'Security: Helmet HTTP security headers, express-rate-limit on auth and AI routes, BCrypt password hashing, JWT HS256 stateless tokens shared between Node.js and Spring Boot, 15 Spring Security integration tests covering JWT expiry/tampering, IDOR, RBAC, RAG injection, SVG sanitization, and path traversal.',
+      'Data: PostgreSQL (Spring Boot authoritative), SQLite (Node.js legacy fallback), Flyway migration versioning. Migration cutover from SQLite to PostgreSQL pending production evaluation period.',
+    ],
+  },
   {
     id: 'pageforge',
     title: 'PageForge — AI-Powered PDF Toolkit',
@@ -211,8 +265,9 @@ export const skillsData: SkillCategory[] = [
     skills: [
       { name: 'Java', highlight: true },
       { name: 'C++', highlight: true },
-      { name: 'Python' },
+      { name: 'TypeScript', highlight: true },
       { name: 'JavaScript' },
+      { name: 'Python' },
       { name: 'SQL', highlight: true }
     ]
   },

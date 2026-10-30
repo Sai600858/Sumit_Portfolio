@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import type { Project } from '../types/portfolio';
-import { X, ExternalLink, Layers, CheckCircle2, Server } from 'lucide-react';
+import { X, ExternalLink, Layers, CheckCircle2, Server, Clock } from 'lucide-react';
 import { GithubIcon } from './Icons';
 
 interface ProjectModalProps {
@@ -41,10 +41,22 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
         aria-modal="true"
         aria-labelledby="modal-headline"
       >
+        {/* Banner Image (BE Featured Project) */}
+        {project.bannerImage && (
+          <div className="relative -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 mb-6 h-48 overflow-hidden rounded-t-2xl">
+            <img
+              src={project.bannerImage}
+              alt={`${project.title} screenshot`}
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0d1017]" />
+          </div>
+        )}
+
         {/* Top Header */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/10">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
               <span className="px-2.5 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-[11px] font-mono font-medium">
                 {project.category}
               </span>
@@ -54,6 +66,12 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
               <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-slate-400 text-[11px] font-mono">
                 {project.statusBadge}
               </span>
+              {project.status === 'in-progress' && (
+                <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] font-mono font-semibold">
+                  <Clock className="w-3 h-3" />
+                  In Progress
+                </span>
+              )}
             </div>
             <h3 id="modal-headline" className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               {project.title}

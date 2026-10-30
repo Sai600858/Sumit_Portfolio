@@ -2,19 +2,28 @@ import React from 'react';
 import { codingProfilesData } from '../data/portfolioData';
 import { Award, Code2, ExternalLink, Flame, CheckCircle, Trophy } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, LeetCodeIcon } from './Icons';
+import { useMode } from '../context/ModeContext';
+import { DecryptedText } from './DecryptedText';
 
 export const CodingProfiles: React.FC = () => {
+  const { isHacker } = useMode();
+
   return (
     <section id="profiles" className="py-20 relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="flex flex-col items-start gap-2 mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-sky-400">
-            <span>06 // COMPETITIVE PROGRAMMING & PROFILES</span>
+          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono ${
+            isHacker ? 'bg-[#B7FF5A]/10 border-[#B7FF5A]/30 text-[#B7FF5A]' : 'bg-white/[0.04] border-white/10 text-sky-400'
+          }`}>
+            <span>{isHacker ? '> 06 // ALGORITHMIC_TELEMETRY' : '06 // COMPETITIVE PROGRAMMING & PROFILES'}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-            Problem Solving & Algorithmic Grit
+            <DecryptedText 
+              text={isHacker ? "Algorithmic Complexity & Competitive Benchmarks" : "Problem Solving & Algorithmic Grit"}
+              trigger={isHacker}
+            />
           </h2>
           <p className="text-sm text-slate-400 max-w-2xl">
             Verified competitive programming ratings across LeetCode and CodeChef with over 700+ algorithmic problems solved.
@@ -22,7 +31,11 @@ export const CodingProfiles: React.FC = () => {
         </div>
 
         {/* Global Stats Callout Banner */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-[#121624] via-[#0e111a] to-[#121624] border border-sky-500/20 shadow-2xl mb-10">
+        <div className={`p-6 sm:p-8 rounded-2xl border shadow-2xl mb-10 ${
+          isHacker 
+            ? 'bg-gradient-to-r from-[#030904] via-[#050e06] to-[#030904] border-[#B7FF5A]/30 shadow-[#B7FF5A]/5'
+            : 'bg-gradient-to-r from-[#121624] via-[#0e111a] to-[#121624] border-sky-500/20'
+        }`}>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center sm:text-left divide-y sm:divide-y-0 sm:divide-x divide-white/10">
             
             <div className="pt-4 sm:pt-0 sm:px-4 first:pl-0">
@@ -73,7 +86,7 @@ export const CodingProfiles: React.FC = () => {
                 Graphs & DP
               </div>
               <div className="text-xs text-slate-400 mt-1">
-                Binary Search, Trees, Trees
+                Binary Search, Trees, Heaps
               </div>
             </div>
 
