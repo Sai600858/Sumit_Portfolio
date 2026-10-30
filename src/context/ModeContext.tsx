@@ -18,9 +18,10 @@ export const ModeProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [mode, setMode] = useState<SiteMode>(() => {
     try {
       const saved = localStorage.getItem('sumit_portfolio_mode');
-      return saved === 'hacker' ? 'hacker' : 'default';
+      // Default to 'hacker' (SUMIT.OS) unless visitor previously selected 'default'
+      return saved === 'default' ? 'default' : 'hacker';
     } catch {
-      return 'default';
+      return 'hacker';
     }
   });
 

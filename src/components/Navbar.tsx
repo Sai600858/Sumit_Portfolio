@@ -174,8 +174,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTerminal, onToggleMode }) 
           )}
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Right Controls: Mode Toggle + Resume + Menu */}
         <div className="flex items-center gap-2 md:hidden">
+          {onToggleMode && (
+            <button
+              onClick={onToggleMode}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[11px] font-mono font-semibold border transition-all ${
+                isHacker
+                  ? 'bg-[#B7FF5A]/15 border-[#B7FF5A]/40 text-[#B7FF5A] shadow-sm shadow-[#B7FF5A]/20'
+                  : 'bg-white/10 border-white/20 text-slate-300'
+              }`}
+              title={isHacker ? 'Switch to GUI Mode' : 'Switch to Hacker Mode (SUMIT.OS)'}
+              data-cursor="btn"
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${isHacker ? 'bg-[#B7FF5A] shadow-[0_0_6px_#B7FF5A]' : 'bg-slate-400'}`} />
+              <span>{isHacker ? 'SUMIT.OS' : 'HACKER'}</span>
+            </button>
+          )}
+
           <a
             href={personalInfo.resumeUrl}
             download="Sumit-Karkhile-Resume.pdf"
@@ -197,37 +213,73 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenTerminal, onToggleMode }) 
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0a0c12]/95 border-b border-white/10 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2 animate-fadeIn">
-          <div className="grid grid-cols-2 gap-2 pt-2">
+        <div className={`md:hidden border-b backdrop-blur-xl px-4 pt-3 pb-6 space-y-3 animate-fadeIn ${
+          isHacker ? 'bg-[#040804]/98 border-[#B7FF5A]/20' : 'bg-[#0a0c12]/95 border-white/10'
+        }`}>
+          {/* Mobile Theme Toggle Card */}
+          {onToggleMode && (
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onToggleMode();
+              }}
+              className={`w-full flex items-center justify-between p-3 rounded-xl border text-xs font-mono transition-all ${
+                isHacker
+                  ? 'bg-[#B7FF5A]/10 border-[#B7FF5A]/30 text-[#B7FF5A]'
+                  : 'bg-white/5 border-white/10 text-slate-300'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`w-2 h-2 rounded-full ${isHacker ? 'bg-[#B7FF5A] shadow-[0_0_8px_#B7FF5A]' : 'bg-slate-400'}`} />
+                <span>Theme:</span>
+                <span className="font-bold">{isHacker ? 'SUMIT.OS (Hacker Mode)' : 'Standard GUI Mode'}</span>
+              </div>
+              <span className="text-[10px] underline">Switch</span>
+            </button>
+          )}
+
+          <div className="grid grid-cols-2 gap-2 pt-1">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2.5 text-sm font-medium rounded-lg text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 text-center transition-colors"
+                className={`px-3 py-2.5 text-sm font-medium rounded-lg text-center transition-colors ${
+                  isHacker 
+                    ? 'text-slate-300 hover:text-[#B7FF5A] bg-[#B7FF5A]/5 hover:bg-[#B7FF5A]/15 font-mono' 
+                    : 'text-slate-300 hover:text-white bg-white/5 hover:bg-white/10'
+                }`}
               >
-                {link.name}
+                {isHacker ? `// ${link.name.toLowerCase()}` : link.name}
               </a>
             ))}
           </div>
 
-          <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
+          <div className={`pt-3 border-t flex flex-col gap-2 ${isHacker ? 'border-[#B7FF5A]/20' : 'border-white/10'}`}>
             {onOpenTerminal && (
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenTerminal();
                 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#151923] text-sky-300 border border-sky-500/20 text-xs font-mono"
+                className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-mono border ${
+                  isHacker
+                    ? 'bg-[#B7FF5A]/15 border-[#B7FF5A]/40 text-[#B7FF5A]'
+                    : 'bg-[#151923] text-sky-300 border-sky-500/20'
+                }`}
               >
                 <Terminal className="w-4 h-4" />
-                <span>Launch Interactive Terminal</span>
+                <span>Launch Interactive Terminal (CLI)</span>
               </button>
             )}
             <a
               href={personalInfo.resumeUrl}
               download="Sumit-Karkhile-Resume.pdf"
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-black font-semibold text-xs transition-colors"
+              className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-xs transition-colors ${
+                isHacker
+                  ? 'bg-[#B7FF5A] text-black hover:bg-[#a8f547]'
+                  : 'bg-sky-500 hover:bg-sky-400 text-black'
+              }`}
             >
               <FileDown className="w-4 h-4" />
               <span>Download Resume (PDF)</span>
